@@ -6,6 +6,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.common.util.StringUtils;
 import me.chanjar.weixin.mp.api.*;
+import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutTextMessage;
@@ -42,8 +43,14 @@ public class WeChatServlet extends HttpServlet {
 
         WxMpMessageHandler handler = new WxMpMessageHandler() {
             public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
+
+//                WxMpCustomMessage message = WxMpCustomMessage.TEXT().toUser(wxMessage.getFromUserName())
+//                        .content("主动").build();
+//                // 设置消息的内容等信息
+//                wxMpService.customMessageSend(message);
+
                 WxMpXmlOutTextMessage m
-                        = WxMpXmlOutMessage.TEXT().content("测试加密消息").fromUser(wxMessage.getToUserName())
+                        = WxMpXmlOutMessage.TEXT().content(wxMessage.getContent()).fromUser(wxMessage.getToUserName())
                         .toUser(wxMessage.getFromUserName()).build();
                 return m;
             }
@@ -60,22 +67,20 @@ public class WeChatServlet extends HttpServlet {
         wxMpMessageRouter = new WxMpMessageRouter(wxMpService);
         wxMpMessageRouter
                 .rule() // 建立规则
-                .async(false) //
-                .content("*") // 拦截内容为“哈哈”的消息
-                .handler(handler)
+//                .async(false) //
+                .handler(handler) // 把消息全部转发给handler
                 .end();
 
 
-        WxMenu wxMenu = new WxMenu();
+        // 建立菜单
+        WxMenu menu = new WxMenu();
         WxMenu.WxMenuButton button1 = new WxMenu.WxMenuButton();
         button1.setType(WxConsts.BUTTON_CLICK);
         button1.setName("今日歌曲");
-        button1.setKey("V1001_TODAY_MUSIC");
-        wxMenu.getButtons().add(button1);
-
-        // 设置菜单
+        button1.setKey("MUSIC");
+        menu.getButtons().add(button1);
         try {
-            wxMpService.menuCreate(wxMenu);
+            wxMpService.menuCreate(menu);
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
