@@ -1,22 +1,19 @@
-import Config.Config;
-import Config.WxMpDemoInMemoryConfigStorage;
-import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.common.bean.WxMenu;
+package Servlets;
+
+import Config.MyWxConfig;
+import Handlers.MessageHandler;
+import UI.MenuManage;
 import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.common.util.StringUtils;
 import me.chanjar.weixin.mp.api.*;
-import me.chanjar.weixin.mp.bean.WxMpCustomMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.WxMpXmlOutTextMessage;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by joway on 15/12/13.
@@ -24,70 +21,39 @@ import java.util.Map;
 public class WeChatServlet extends HttpServlet {
     //WxMpInMemoryConfigStorage在正式生产环境中，
     //可以提供自己的实现，比如将这些信息存储到数据库里，以便各个节点能够共享access token。
-    protected WxMpDemoInMemoryConfigStorage wxMpConfigStorage;
+    protected MyWxConfig myWxConfig;
     protected WxMpService wxMpService;
     protected WxMpMessageRouter wxMpMessageRouter;
 
-    @Override public void init() throws ServletException {
+    private MessageHandler messageHandler;
+    private MenuManage menuManage;
+
+    @Override
+    public void init() throws ServletException {
         super.init();
 
-        wxMpConfigStorage = new WxMpDemoInMemoryConfigStorage();
-
-        wxMpConfigStorage.setAppId(Config.APPID); // 设置微信公众号的appid
-        wxMpConfigStorage.setSecret(Config.APPSECRET); // 设置微信公众号的app corpSecret
-        wxMpConfigStorage.setToken(Config.TOKEN); // 设置微信公众号的token
-        wxMpConfigStorage.setAesKey(Config.ENCODING_AESKEY); // 设置微信公众号的EncodingAESKey
+        myWxConfig = new MyWxConfig();
 
         wxMpService = new WxMpServiceImpl();
-        wxMpService.setWxMpConfigStorage(wxMpConfigStorage);
+        wxMpService.setWxMpConfigStorage(myWxConfig);
 
-        WxMpMessageHandler handler = new WxMpMessageHandler() {
-            public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
-
-//                WxMpCustomMessage message = WxMpCustomMessage.TEXT().toUser(wxMessage.getFromUserName())
-//                        .content("主动").build();
-//                // 设置消息的内容等信息
-//                wxMpService.customMessageSend(message);
-
-                WxMpXmlOutTextMessage m
-                        = WxMpXmlOutMessage.TEXT().content(wxMessage.getContent()).fromUser(wxMessage.getToUserName())
-                        .toUser(wxMessage.getFromUserName()).build();
-                return m;
-            }
-        };
-
-
-        /* 消息路由器:
-            支持对多种消息类型进行路由.
-            在整个应用程序中，WxMessageRouter应该是单例的。
-            配置路由规则时要按照从细到粗的原则，否则可能消息可能会被提前处理
-            规则的结束必须用Rule.end()或者Rule.next()，否则不会生效
-            具体使用可以看源代码中的WxMpMessageRouterTest单元测试，或者查看Javadoc
-         */
+        // 路由绑定
         wxMpMessageRouter = new WxMpMessageRouter(wxMpService);
-        wxMpMessageRouter
-                .rule() // 建立规则
-//                .async(false) //
-                .handler(handler) // 把消息全部转发给handler
-                .end();
 
+        // 创建消息处理,并与路由相映射
+        messageHandler = new MessageHandler(wxMpService, wxMpMessageRouter);
 
-        // 建立菜单
-        WxMenu menu = new WxMenu();
-        WxMenu.WxMenuButton button1 = new WxMenu.WxMenuButton();
-        button1.setType(WxConsts.BUTTON_CLICK);
-        button1.setName("今日歌曲");
-        button1.setKey("MUSIC");
-        menu.getButtons().add(button1);
+        // MenuManage 创建自定义菜单
         try {
-            wxMpService.menuCreate(menu);
+            menuManage = new MenuManage(wxMpService);
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
 
     }
 
-    @Override protected void service(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=utf-8");
@@ -128,7 +94,7 @@ public class WeChatServlet extends HttpServlet {
         } else if ("aes".equals(encryptType)) {
             // 是aes加密的消息
             String msgSignature = request.getParameter("msg_signature");
-            inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), wxMpConfigStorage,
+            inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), myWxConfig,
                     timestamp, nonce, msgSignature);
         } else {
             response.getWriter().println("不可识别的加密类型");
@@ -141,7 +107,7 @@ public class WeChatServlet extends HttpServlet {
             if ("raw".equals(encryptType)) {
                 response.getWriter().write(outMessage.toXml());// 非加密消息返回
             } else if ("aes".equals(encryptType)) {
-                response.getWriter().write(outMessage.toEncryptedXml(wxMpConfigStorage)); // 加密消息返回
+                response.getWriter().write(outMessage.toEncryptedXml(myWxConfig)); // 加密消息返回
             }
         }
 
