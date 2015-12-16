@@ -5,13 +5,21 @@
          version="3.1">
 
     <servlet>
-        <servlet-name>WeChat</servlet-name>
+        <servlet-name>WeChatServlet</servlet-name>
         <servlet-class>WeChatServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>WeChat</servlet-name>
+        <servlet-name>WeChatServlet</servlet-name>
         <url-pattern>/api</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>WeChatManage</servlet-name>
+        <servlet-class>WeChatManage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WeChatManage</servlet-name>
+        <url-pattern>/manage</url-pattern>
     </servlet-mapping>
 
 </web-app>
