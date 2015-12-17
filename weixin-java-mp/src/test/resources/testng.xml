@@ -3,32 +3,32 @@
 <suite name="Weixin-java-tool-suite" verbose="1">
 	<test name="API_Test">
 		<classes>
-      <class name="me.chanjar.weixin.mp.api.WxMpBusyRetryTest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpBaseAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpCustomMessageAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpMenuAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpGroupAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpMassMessageAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpMediaAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpUserAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpQrCodeAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpShortUrlAPITest" />
-			<class name="me.chanjar.weixin.mp.api.WxMpMessageRouterTest" />
-      <class name="me.chanjar.weixin.mp.api.WxMpJsAPITest" />
-      <class name="me.chanjar.weixin.mp.api.WxMpMiscAPITest" />
+      <class name="com.jiaqu365.weixin.mp.api.WxMpBusyRetryTest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpBaseAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpCustomMessageAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpMenuAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpGroupAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpMassMessageAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpMediaAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpUserAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpQrCodeAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpShortUrlAPITest" />
+			<class name="com.jiaqu365.weixin.mp.api.WxMpMessageRouterTest" />
+      <class name="com.jiaqu365.weixin.mp.api.WxMpJsAPITest" />
+      <class name="com.jiaqu365.weixin.mp.api.WxMpMiscAPITest" />
 		</classes>
 	</test>
 
 	<test name="Bean_Test">
 		<classes>
-			<class name="me.chanjar.weixin.mp.bean.WxMpCustomMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxMpXmlMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxMpXmlOutImageMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxXmlOutMusicMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxXmlOutNewsMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxXmlOutVideoMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxXmlOutVoiceMessageTest" />
-			<class name="me.chanjar.weixin.mp.bean.WxXmlOutTextMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxMpCustomMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxMpXmlMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxMpXmlOutImageMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxXmlOutMusicMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxXmlOutNewsMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxXmlOutVideoMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxXmlOutVoiceMessageTest" />
+			<class name="com.jiaqu365.weixin.mp.bean.WxXmlOutTextMessageTest" />
 		</classes>
 	</test>
 </suite>

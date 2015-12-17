@@ -1,6 +1,6 @@
 package Config;
 
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
+import com.jiaqu365.weixin.mp.api.WxMpInMemoryConfigStorage;
 
 /**
  * Created by joway on 15/12/13.

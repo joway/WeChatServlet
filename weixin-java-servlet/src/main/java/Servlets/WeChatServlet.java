@@ -3,11 +3,13 @@ package Servlets;
 import Config.MyWxConfig;
 import Handlers.MessageHandler;
 import UI.MenuManage;
-import me.chanjar.weixin.common.exception.WxErrorException;
-import me.chanjar.weixin.common.util.StringUtils;
-import me.chanjar.weixin.mp.api.*;
-import me.chanjar.weixin.mp.bean.WxMpXmlMessage;
-import me.chanjar.weixin.mp.bean.WxMpXmlOutMessage;
+import com.jiaqu365.weixin.common.exception.WxErrorException;
+import com.jiaqu365.weixin.common.util.StringUtils;
+import com.jiaqu365.weixin.mp.api.WxMpMessageRouter;
+import com.jiaqu365.weixin.mp.api.WxMpService;
+import com.jiaqu365.weixin.mp.api.WxMpServiceImpl;
+import com.jiaqu365.weixin.mp.bean.WxMpXmlMessage;
+import com.jiaqu365.weixin.mp.bean.WxMpXmlOutMessage;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,6 +51,8 @@ public class WeChatServlet extends HttpServlet {
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
+
+
 
     }
 

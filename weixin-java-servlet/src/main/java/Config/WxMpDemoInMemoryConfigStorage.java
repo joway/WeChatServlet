@@ -1,11 +1,6 @@
 package Config;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import me.chanjar.weixin.common.util.xml.XStreamInitializer;
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
-
-import java.io.InputStream;
+import com.jiaqu365.weixin.mp.api.WxMpInMemoryConfigStorage;
 
 /**
  * Created by joway on 15/12/13.
