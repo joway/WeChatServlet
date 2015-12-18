@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class SessionHandler implements WxMpMessageHandler, WxMpMessageMatcher {
 
-    private Pattern pattern = Pattern.compile("^bd ");
+    private Pattern pattern = Pattern.compile("^bd *");
 
     private boolean isMatch(WxMpXmlMessage message){
         return pattern.matcher(message.getContent()).matches();

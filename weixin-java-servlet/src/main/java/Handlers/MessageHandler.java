@@ -7,6 +7,7 @@ import com.jiaqu365.weixin.common.session.WxSessionManager;
 import com.jiaqu365.weixin.mp.api.WxMpMessageHandler;
 import com.jiaqu365.weixin.mp.api.WxMpMessageRouter;
 import com.jiaqu365.weixin.mp.api.WxMpService;
+import com.jiaqu365.weixin.mp.bean.WxMpCustomMessage;
 import com.jiaqu365.weixin.mp.bean.WxMpXmlMessage;
 import com.jiaqu365.weixin.mp.bean.WxMpXmlOutMessage;
 import com.jiaqu365.weixin.mp.bean.WxMpXmlOutTextMessage;
@@ -41,12 +42,17 @@ public class MessageHandler {
                 .end()
                 .rule() // 建立规则
                 .msgType(WxConsts.CUSTOM_MSG_TEXT)
-                .async(false) //这个不加发现会无法处理到消息
+                .async(false)
                 .handler(new WxMpMessageHandler() {
                     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService, WxSessionManager sessionManager) throws WxErrorException {
+
+//                        System.out.println("async");
+
+//                        System.out.println(wxMessage.getContent()+"\n"+TulingRobotHandler.getReplyFromTulingRobot(wxMessage.getContent()));
+
                         WxMpXmlOutTextMessage m
-                                = WxMpXmlOutMessage.TEXT().content(wxMessage.getContent()).fromUser(wxMessage.getToUserName())
-                                .toUser(wxMessage.getFromUserName()).build();
+                                = WxMpXmlOutTextMessage.TEXT().content(wxMessage.getContent())
+                                .fromUser(wxMessage.getToUserName()).toUser(wxMessage.getFromUserName()).build();
                         return m;
                     }
                 }) // 把消息全部转发给handler

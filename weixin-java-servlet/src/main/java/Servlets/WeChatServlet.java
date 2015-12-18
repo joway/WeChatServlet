@@ -2,6 +2,7 @@ package Servlets;
 
 import Config.MyWxConfig;
 import Handlers.MessageHandler;
+import Handlers.TulingRobotHandler;
 import UI.MenuManage;
 import com.jiaqu365.weixin.common.exception.WxErrorException;
 import com.jiaqu365.weixin.common.util.StringUtils;
@@ -33,11 +34,11 @@ public class WeChatServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-
         myWxConfig = new MyWxConfig();
 
         wxMpService = new WxMpServiceImpl();
         wxMpService.setWxMpConfigStorage(myWxConfig);
+
 
         // 路由绑定
         wxMpMessageRouter = new WxMpMessageRouter(wxMpService);
@@ -114,7 +115,6 @@ public class WeChatServlet extends HttpServlet {
                 response.getWriter().write(outMessage.toEncryptedXml(myWxConfig)); // 加密消息返回
             }
         }
-
 
     }
 }
